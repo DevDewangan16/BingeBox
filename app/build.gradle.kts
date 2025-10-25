@@ -91,4 +91,6 @@ dependencies {
 
     // System UI Controller
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.31.6-rc")
+
+    implementation("com.valentinilk.shimmer:compose-shimmer:1.2.0")
 }
