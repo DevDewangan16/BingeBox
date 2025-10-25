@@ -6,6 +6,9 @@ data class TitleItem(
     val year: Int?,
     val type: String,
     val poster: String? = null,
+    val backdrop: String? = null,
     val plot_overview: String? = null,
-    val release_date: String? = null
+    val release_date: String? = null,
+    val genre_names: List<String>? = null,
+    val user_rating: Double? = null
 )

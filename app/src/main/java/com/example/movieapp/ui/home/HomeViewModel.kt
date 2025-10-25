@@ -1,7 +1,6 @@
 package com.example.movieapp.ui.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.movieapp.data.model.TitleItem
 import com.example.movieapp.data.repository.MovieRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -33,6 +32,8 @@ class HomeViewModel : ViewModel() {
 
     fun fetchData() {
         _loading.value = true
+        _error.value = null
+
         val disposable = repository.fetchMoviesAndShows()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -41,8 +42,9 @@ class HomeViewModel : ViewModel() {
                 _tvShows.value = pair.second
                 _loading.value = false
             }, { throwable ->
-                _error.value = throwable.message
+                _error.value = "Failed to load content. Please try again."
                 _loading.value = false
+                throwable.printStackTrace()
             })
         disposables.add(disposable)
     }

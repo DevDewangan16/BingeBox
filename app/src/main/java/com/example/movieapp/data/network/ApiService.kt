@@ -12,7 +12,7 @@ interface ApiService {
     fun getPopularMovies(
         @Query("apiKey") apiKey: String,
         @Query("types") types: String = "movie",
-        @Query("limit") limit: Int = 20,
+        @Query("limit") limit: Int = 50,
         @Query("sort_by") sortBy: String = "popularity_desc"
     ): Single<TitleResponse>
 
@@ -20,11 +20,10 @@ interface ApiService {
     fun getPopularTvShows(
         @Query("apiKey") apiKey: String,
         @Query("types") types: String = "tv_series",
-        @Query("limit") limit: Int = 20,
+        @Query("limit") limit: Int = 50,
         @Query("sort_by") sortBy: String = "popularity_desc"
     ): Single<TitleResponse>
 
-    // ✅ New endpoint for details
     @GET("title/{id}/details/")
     fun getTitleDetails(
         @Path("id") id: Int,
