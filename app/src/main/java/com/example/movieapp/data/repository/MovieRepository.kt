@@ -15,7 +15,7 @@ class MovieRepository {
                     Single.just(emptyList())
                 } else {
                     // Fetch details for first 20 movies only to avoid rate limiting
-                    val detailCalls = response.titles.take(20).map { item ->
+                    val detailCalls = response.titles.take(50).map { item ->
                         api.getTitleDetails(item.id, Constants.API_KEY)
                             .map { details ->
                                 TitleItem(
@@ -59,7 +59,7 @@ class MovieRepository {
                     Single.just(emptyList())
                 } else {
                     // Fetch details for first 20 shows only to avoid rate limiting
-                    val detailCalls = response.titles.take(20).map { item ->
+                    val detailCalls = response.titles.take(50).map { item ->
                         api.getTitleDetails(item.id, Constants.API_KEY)
                             .map { details ->
                                 TitleItem(

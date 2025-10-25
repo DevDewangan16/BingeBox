@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.movieapp.data.model.TitleItem
+import com.example.movieapp.ui.theme.BrandPrimary
 import com.example.movieapp.util.HomeShimmerEffect
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -61,7 +62,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                             "BINGEBOX",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFFE50914)
+                            color = BrandPrimary
                         )
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -77,7 +78,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                     indicator = { tabPositions ->
                         TabRowDefaults.SecondaryIndicator(
                             modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
-                            color = Color(0xFFE50914),
+                            color = BrandPrimary,
                             height = 3.dp
                         )
                     }
@@ -121,7 +122,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                     Button(
                         onClick = { viewModel.fetchData() },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFE50914)
+                            containerColor = BrandPrimary
                         )
                     ) {
                         Text("Retry")
@@ -281,7 +282,7 @@ fun FeaturedSection(item: TitleItem, navController: NavController) {
                     navController.navigate("details/${item.id}")
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFE50914)
+                    containerColor = BrandPrimary
                 ),
                 modifier = Modifier.height(48.dp)
             ) {

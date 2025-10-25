@@ -249,7 +249,7 @@ fun DetailsScreen(titleId: String, navController: NavController) {
                                 .fillMaxWidth()
                                 .height(56.dp),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(0xFFE50914)
+                                containerColor = Color(0xFFEF4444)
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {

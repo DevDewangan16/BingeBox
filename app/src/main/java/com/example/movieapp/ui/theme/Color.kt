@@ -10,7 +10,8 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-// Custom Netflix-inspired colors
-val NetflixRed = Color(0xFFE50914)
+val BrandPrimary = Color(0xFFEF4444)  // Red
+val BrandAccent = Color(0xFFF87171)   // Light Red
+
 val DarkBackground = Color(0xFF141414)
 val DarkGray = Color(0xFF2F2F2F)
