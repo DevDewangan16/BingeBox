@@ -39,7 +39,17 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    var selectedTab by remember { mutableStateOf(0) }
+    // Get the saved tab index from saved state or default to 0
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    var selectedTab by remember {
+        mutableStateOf(savedStateHandle?.get<Int>("selectedTab") ?: 0)
+    }
+
+    // Save the selected tab whenever it changes
+    LaunchedEffect(selectedTab) {
+        savedStateHandle?.set("selectedTab", selectedTab)
+    }
+
     val tabs = listOf("Movies", "TV Shows")
 
     Scaffold(
@@ -48,7 +58,7 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                 TopAppBar(
                     title = {
                         Text(
-                            "STREAMFLIX",
+                            "BINGEBOX",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFE50914)
