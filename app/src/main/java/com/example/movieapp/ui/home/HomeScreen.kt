@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,21 +39,56 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
     val loading by viewModel.loading.collectAsState()
     val error by viewModel.error.collectAsState()
 
+    var selectedTab by remember { mutableStateOf(0) }
+    val tabs = listOf("Movies", "TV Shows")
+
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "STREAMFLIX",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color(0xFFE50914)
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
+                            "STREAMFLIX",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFE50914)
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color(0xFF141414)
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF141414)
                 )
-            )
+
+                // Tab Row
+                TabRow(
+                    selectedTabIndex = selectedTab,
+                    containerColor = Color(0xFF141414),
+                    contentColor = Color.White,
+                    indicator = { tabPositions ->
+                        TabRowDefaults.SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab]),
+                            color = Color(0xFFE50914),
+                            height = 3.dp
+                        )
+                    }
+                ) {
+                    tabs.forEachIndexed { index, title ->
+                        Tab(
+                            selected = selectedTab == index,
+                            onClick = { selectedTab = index },
+                            text = {
+                                Text(
+                                    text = title,
+                                    fontSize = 16.sp,
+                                    fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                )
+                            },
+                            selectedContentColor = Color.White,
+                            unselectedContentColor = Color.White.copy(alpha = 0.6f)
+                        )
+                    }
+                }
+            }
         },
         containerColor = Color(0xFF141414)
     ) { padding ->
@@ -83,6 +119,9 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                 }
             }
         } else {
+            val currentList = if (selectedTab == 0) movies else shows
+            val currentType = if (selectedTab == 0) "Movies" else "TV Shows"
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -90,27 +129,47 @@ fun HomeScreen(viewModel: HomeViewModel, navController: NavController) {
                     .verticalScroll(rememberScrollState())
             ) {
                 // Featured Section
-                if (movies.isNotEmpty()) {
-                    FeaturedSection(movies.first(), navController)
+                if (currentList.isNotEmpty()) {
+                    FeaturedSection(currentList.first(), navController)
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Movies Section
-                CategorySection(
-                    title = "Popular Movies",
-                    items = movies,
-                    navController = navController
+                // All Movies/TV Shows Grid
+                Text(
+                    text = "All $currentType",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // TV Shows Section
-                CategorySection(
-                    title = "Popular TV Shows",
-                    items = shows,
-                    navController = navController
-                )
+                // Grid Layout for all items
+                Column(
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                ) {
+                    currentList.chunked(3).forEach { rowItems ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            rowItems.forEach { item ->
+                                Box(modifier = Modifier.weight(1f)) {
+                                    MovieCard(item = item, onClick = {
+                                        navController.navigate("details/${item.id}")
+                                    })
+                                }
+                            }
+                            // Fill empty spaces in the last row
+                            repeat(3 - rowItems.size) {
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
